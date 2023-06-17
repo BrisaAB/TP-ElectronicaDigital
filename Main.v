@@ -2,6 +2,7 @@
 `include "contador_ud/contador_ud_p.v"
 `include "deboundcer/db_fsm.v"
 `include "edge/edge_detect_gate.v"
+
 module main2_0(
     input wire clk,
     input wire reset,
