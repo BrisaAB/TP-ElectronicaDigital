@@ -11,7 +11,7 @@ module main2_0(
 );
 //declaro las variables
 wire[3:0] BTN_inversados, boton_db, boton_tick;
-reg[3:0] c;
+reg[3:0] c = 4'b0000;
 localparam 
     cero = 1'b0;
 
@@ -71,8 +71,19 @@ edge_detect_gate eboton4(
     .level(boton_db[3]),
     .tick(boton_tick[3])
 );
-always @*
-    c <= boton_tick;
-assign LEDS = c;
+always @* begin
+    if(boton_tick[0]) begin
+        c[0] = 1;
+    end 
+    else begin
+        if(boton_tick[1]) begin
+        c[0] = 0;
+        end
+    end
+end
+assign LEDS[0] = c[0];
+assign LEDS[1] = c[1];
+assign LEDS[2] = c[2];
+assign LEDS[3] = c[3];
 
 endmodule
