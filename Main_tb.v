@@ -10,12 +10,13 @@ module main_tb();
   reg reset;
   reg [3:0] BOTONES;
   wire [3:0] LEDS;
-
+  wire [3:0] num
   main2_0 UUT (
       .clk(clk),
       .reset(reset),
       .BTN(BOTONES),
-      .LEDS(LEDS)
+      .LEDS(LEDS),
+      .num(num)
   );
 
 

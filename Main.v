@@ -9,13 +9,31 @@ module main2_0(
     input wire [3:0] BTN,
     output wire [3:0] LEDS
 );
-//declaro las variables
+//------------------------------------------------
+//            declaro las variables
+//------------------------------------------------
+//variables para preparar las entradas y salidas
 wire[3:0] BTN_inversados, boton_db, boton_tick;
 reg[3:0] c = 4'b0000;
+
 localparam 
     cero = 1'b0;
 
+//Variables para la logica de estados
+/*
+localparam [1:0]
+    cargarNumerador = 2'b00,
+    cargarDenominador = 2'b01,
+    realizarDivision = 2'b10,
+    mostrarResto = 2'b11;
+reg[1:0] state;
+reg[1:0] next_state;*/
+reg[3:0] num;//, den,resultado;
+//------------------------------------------------
+//            preparo las entradas
+//------------------------------------------------
 //Invierto la senial de los botones
+
 inv inversador(
     .in(BTN),
     .out(BTN_inversados)
@@ -71,16 +89,71 @@ edge_detect_gate eboton4(
     .level(boton_db[3]),
     .tick(boton_tick[3])
 );
-always @* begin
-    if(boton_tick[0]) begin
-        c[0] = 1;
-    end 
+always@(posedge clk)begin
+     contador_ud numerador(
+                .clk(clk),
+                .reset(cero),
+                .up(boton_tick[1]),
+                .down(boton_tick[2]),
+                .count(num)
+            );
+        c = num;
+end
+
+/*
+//------------------------------------------------
+//            logica de estados
+//------------------------------------------------
+always @(posedge clk or posedge reset) begin
+    if (reset) begin
+        state <= cargarNumerador; //valor de estado inicial
+        next_state <= cargarNumerador; //valor inicial del siguiente estado
+    end
     else begin
-        if(boton_tick[1]) begin
-        c[0] = 0;
+    state <= next_state;
+    //En este caso se podria hacer con la linea de abajo,
+    //pero en general se trabaja con el case dependiendo de los
+    //estados.
+    //count <= count+2;
+
+    case(state)
+        cargarNumerador: begin
+            contador_ud numerador(
+                .clk(clk),
+                .reset(cero),
+                .up(boton_tick[1]),
+                .down(boton_tick[2]),
+                .count(num)
+            );
+            if(boton_tick[0])
+                next_state = cargarDenominador;
+            else
+                next_state = cargarNumerador;
         end
+        cargarDenominador: begin
+                  contador_ud denominador(
+                .clk(clk),
+                .reset(cero),
+                .up(boton_tick[1]),
+                .down(boton_tick[2]),
+                .count(num)
+            );
+                if(boton_tick[0])
+                    next_state = realizarDivision;
+                else
+                    next_state = cargarDenominador;
+        end
+        realizarDivision: begin
+        end
+        mostrarResto: begin
+        end
+        default: begin
+        end
+            
+    endcase
     end
 end
+*/
 assign LEDS[0] = c[0];
 assign LEDS[1] = c[1];
 assign LEDS[2] = c[2];

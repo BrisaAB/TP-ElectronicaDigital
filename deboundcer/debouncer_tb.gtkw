@@ -1,0 +1,18 @@
+[*]
+[*] GTKWave Analyzer v3.3.77 (w)1999-2016 BSI
+[*] Wed Jun 21 19:14:43 2023
+[*]
+[dumpfile] "C:\Users\Brisa\Documents\GitHub\TP-ElectronicaDigital\deboundcer\debouncer_tb.vcd"
+[dumpfile_mtime] "Wed Jun 21 19:14:38 2023"
+[dumpfile_size] 11346
+[savefile] "C:\Users\Brisa\Documents\GitHub\TP-ElectronicaDigital\deboundcer\debouncer_tb.gtkw"
+[timestart] 0
+[size] 1000 600
+[pos] -1 -1
+*0.000000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[sst_width] 211
+[signals_width] 78
+[sst_expanded] 1
+[sst_vpaned_height] 154
+[pattern_trace] 1
+[pattern_trace] 0

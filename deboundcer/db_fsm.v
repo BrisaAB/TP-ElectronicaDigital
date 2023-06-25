@@ -1,5 +1,6 @@
 module db_fsm(
-    input wire clk, reset,
+    input wire clk, 
+    input wire reset,
     input wire sw,
     output reg db
 );
@@ -27,8 +28,10 @@ reg [2:0] state_reg, state_next;
 //counter to generate 10ms tick
 
 always @(posedge clk)
+    begin
     q_reg <= q_next;
-    //next-state logic
+    end
+//next-state logic
 assign q_next = q_reg+1;
 //output tick
 assign m_tick = (q_reg == 0) ? 1'b1 : 1'b0;
@@ -74,7 +77,7 @@ begin
                 if(~sw)
                     state_next = wait0_1;
             end
-        wait0_1
+        wait0_1:
             begin
                 db = 1'b1;
                 if(sw)
@@ -83,7 +86,7 @@ begin
                     if(m_tick)
                         state_next = wait0_2;
             end
-        wait0_2
+        wait0_2:
             begin
                 db = 1'b1;
                 if (sw)
@@ -92,7 +95,7 @@ begin
                     if (m_tick)
                         state_next = wait0_3;
             end
-        wait0_3
+        wait0_3:
             begin
                 db = 1'b1;
                 if(sw)
