@@ -20,15 +20,16 @@ localparam
     cero = 1'b0;
 
 //Variables para la logica de estados
-/*
+
 localparam [1:0]
     cargarNumerador = 2'b00,
     cargarDenominador = 2'b01,
     realizarDivision = 2'b10,
     mostrarResto = 2'b11;
 reg[1:0] state;
-reg[1:0] next_state;*/
-reg[3:0] num;//, den,resultado;
+reg[1:0] next_state;
+reg[3:0] num, den, resultado;
+reg boton_num_up, boton_num_down, boton_den_up, boton_den_down; 
 //------------------------------------------------
 //            preparo las entradas
 //------------------------------------------------
@@ -89,18 +90,27 @@ edge_detect_gate eboton4(
     .level(boton_db[3]),
     .tick(boton_tick[3])
 );
+
+contador_ud_p numerador(
+            .clk(clk),
+            .reset(cero),
+            .up(boton_num_up),
+            .down(boton_num_down),
+            .count(num)
+);
+
+contador_ud denominador(
+            .clk(clk),
+            .reset(cero),
+            .up(),
+            .down(boton_tick[2]),
+            .count(num)
+);
+/*
 always@(posedge clk)begin
-     contador_ud numerador(
-                .clk(clk),
-                .reset(cero),
-                .up(boton_tick[1]),
-                .down(boton_tick[2]),
-                .count(num)
-            );
         c = num;
 end
-
-/*
+*/
 //------------------------------------------------
 //            logica de estados
 //------------------------------------------------
@@ -111,33 +121,19 @@ always @(posedge clk or posedge reset) begin
     end
     else begin
     state <= next_state;
-    //En este caso se podria hacer con la linea de abajo,
-    //pero en general se trabaja con el case dependiendo de los
-    //estados.
-    //count <= count+2;
-
     case(state)
         cargarNumerador: begin
-            contador_ud numerador(
-                .clk(clk),
-                .reset(cero),
-                .up(boton_tick[1]),
-                .down(boton_tick[2]),
-                .count(num)
-            );
+
+            boton_num_up = boton_tick[1];
+            boton_num_down = boton_tick[2];
             if(boton_tick[0])
                 next_state = cargarDenominador;
             else
                 next_state = cargarNumerador;
         end
         cargarDenominador: begin
-                  contador_ud denominador(
-                .clk(clk),
-                .reset(cero),
-                .up(boton_tick[1]),
-                .down(boton_tick[2]),
-                .count(num)
-            );
+                boton_den_up = boton_tick[1];
+                boton_den_down = boton_tick[2];
                 if(boton_tick[0])
                     next_state = realizarDivision;
                 else
@@ -153,7 +149,7 @@ always @(posedge clk or posedge reset) begin
     endcase
     end
 end
-*/
+
 assign LEDS[0] = c[0];
 assign LEDS[1] = c[1];
 assign LEDS[2] = c[2];
