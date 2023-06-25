@@ -99,7 +99,7 @@ contador_ud_p numerador(
             .count(num)
 );
 
-contador_ud denominador(
+contador_ud_p denominador(
             .clk(clk),
             .reset(cero),
             .up(),
